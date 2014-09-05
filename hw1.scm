@@ -37,16 +37,16 @@
 ; bits in a bucket
 (define (p4 m n)
   ; base case - last bit?
-  (display m) (display " ") (display n) (newline)
+  ;(display m) (display "\t") (display n) (newline)
   (cond
     ((and (= m 0) (not(= n 0))) 1)
     ((= n 1) 1)
     ((= m 1) 0)
     (else
-      ; check which bits were selected
+      ; check which bits were selected and
       ; decide which bit to add back
       ((lambda (temp) 
-         (display temp)
+         ;(display temp) (display "\t")
          (cond
            ((equal? temp (cons 0 0)) (p4 (- m 2) (+ n 1)))
            ((equal? temp (cons 1 1)) (p4 m (- n 1)))
