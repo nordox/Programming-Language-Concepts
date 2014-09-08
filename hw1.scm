@@ -1,5 +1,6 @@
 ; CMPSC 461, Homework 1
-; Nicholas Krzenski, ngk5036@psu.edu
+; Nicholas Krzenski
+; ngk5036@psu.edu
 
 ; fibonacci function (two recursive calls)
 (define (p1 n)
@@ -9,7 +10,7 @@
         (else (+ (p1 (- n 1)) (p1 (- n 2)))))
 )
 
-; fibonacci function (two recursive calls)
+; fibonacci function (one recursive call using helper function)
 (define (p2 n)
     (cond 
         ((= n 0) 1)
@@ -34,27 +35,13 @@
         (else (+ (* (car coefficients) (p3 (- n 1) base-case coefficients)) (* (cadr base-case) (p3 (- n 2) base-case coefficients))))
     )
 )
+
 ; bits in a bucket
 (define (p4 m n)
-  ; base case - last bit?
-  ;(display m) (display "\t") (display n) (newline)
-  (cond
-    ((and (= m 0) (not(= n 0))) 1)
-    ((= n 1) 1)
-    ((= m 1) 0)
-    (else
-      ; check which bits were selected and
-      ; decide which bit to add back
-      ((lambda (temp) 
-         ;(display temp) (display "\t")
-         (cond
-           ((equal? temp (cons 0 0)) (p4 (- m 2) (+ n 1)))
-           ((equal? temp (cons 1 1)) (p4 m (- n 1)))
-           (else (p4 m (- n 1)))))
-       (cons (random 2) (random 2)))
-      )
-    )
-  )
+    ; case even # of 0 bits => 1
+    ; case odd # of 0 bits  => 0
+    (if (even? m) 1 0)
+)
 
 ; test function
 (begin
