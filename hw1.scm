@@ -7,7 +7,8 @@
     (cond 
         ((= n 0) 1)
         ((= n 1) 1)
-        (else (+ (p1 (- n 1)) (p1 (- n 2)))))
+        (else (+ (p1 (- n 1)) (p1 (- n 2))))
+    )
 )
 
 ; fibonacci function (one recursive call using helper function)
@@ -15,7 +16,8 @@
     (cond 
         ((= n 0) 1)
         ((= n 1) 1)
-        (else (p2_helper 2 1 1 n)))
+        (else (p2_helper 2 1 1 n))
+    )
 )
 
 ; helper function
@@ -28,11 +30,16 @@
 
 ; generalized fibonacci
 (define (p3 n base-case coefficients)
-    ; base cases
-    (cond
-        ((= n 0) (car base-case))
-        ((= n 1) (cadr base-case))
-        (else (+ (* (car coefficients) (p3 (- n 1) base-case coefficients)) (* (cadr base-case) (p3 (- n 2) base-case coefficients))))
+    (let    ; define base cases as f0 and f1
+        (
+          (f0 (car base-case))
+          (f1 (cadr base-case))
+        )
+        (cond
+            ((= n 0) f0)
+            ((= n 1) f1)
+            (else (+ (* (car coefficients) (p3 (- n 1) base-case coefficients)) (* (cadr base-case) (p3 (- n 2) base-case coefficients))))
+        )
     )
 )
 
@@ -40,7 +47,12 @@
 (define (p4 m n)
     ; case even # of 0 bits => 1
     ; case odd # of 0 bits  => 0
-    (if (even? m) 1 0)
+    (cond   ; first make sure data is valid
+        ((and (= m 0) (= n 0)) -1)
+        ((or (< m 0) (< n 0)) -1)
+        ((even? m) 1)
+        (else 0)
+    )
 )
 
 ; test function
