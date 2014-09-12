@@ -20,7 +20,7 @@
     )
 )
 
-; helper function
+; helper function for p2
 (define (p2_helper a b count n)
     (if (= count n)
         b
@@ -32,10 +32,10 @@
 (define (p3 n base-case coefficients)
     (let    ; define base cases as f0 and f1 and coefficients as a and b
         (
-          (f0 (car base-case))
-          (f1 (cadr base-case))
-          (a (car coefficients))
-          (b (cadr coefficients))
+          (f0   (car base-case))
+          (f1   (cadr base-case))
+          (a    (car coefficients))
+          (b    (cadr coefficients))
         )
         (cond
             ((= n 0) f0)
@@ -55,13 +55,4 @@
         ((even? m) 1)
         (else 0)
     )
-)
-
-; test function
-(begin
-  (define nums '(0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20))
-  (display "p1 ") (display (map p1 nums)) (newline)
-  (display "p2 ") (display (map p2 nums)) (newline)
-  (display "p3 ") (display (map (lambda (n) (p3 n '(1 1) '(1 1))) nums)) (newline)
-  (newline)
 )
