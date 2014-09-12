@@ -30,15 +30,17 @@
 
 ; generalized fibonacci
 (define (p3 n base-case coefficients)
-    (let    ; define base cases as f0 and f1
+    (let    ; define base cases as f0 and f1 and coefficients as a and b
         (
           (f0 (car base-case))
           (f1 (cadr base-case))
+          (a (car coefficients))
+          (b (cadr coefficients))
         )
         (cond
             ((= n 0) f0)
             ((= n 1) f1)
-            (else (+ (* (car coefficients) (p3 (- n 1) base-case coefficients)) (* (cadr base-case) (p3 (- n 2) base-case coefficients))))
+            (else (+ (* a (p3 (- n 1) base-case coefficients)) (* b (p3 (- n 2) base-case coefficients))))
         )
     )
 )
