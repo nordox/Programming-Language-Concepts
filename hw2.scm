@@ -27,6 +27,29 @@
     )
 )
 
+(define (poly_val p x)
+    (if (null? p) 0
+        (+ (* x (poly_val (cdr p) x)) (car p))
+    )
+)
+
+(define (poly_list_val p x)
+    (map
+        (lambda (b)
+            (if (null? p) 0
+                (+
+                    (*
+                        b
+                        (poly_val (cdr p) b)
+                    )
+                    (car p)
+                )
+            )
+        )
+        x
+    )
+)
+
 (define (try-rewrite-let expr)
   (display "in  : ") (display expr) (newline)
   (display "out : ") (display (rewrite-let expr)) (newline)
@@ -37,4 +60,12 @@
   (display "in  : ") (display expr) (newline)
   (display "out : ") (display (rewrite-cond expr)) (newline)
   (newline)
+)
+
+(define (test_val p x)
+    (display p) (display " at ") (display x) (display " = ") (display (poly_val p x)) (newline)
+)
+
+(define (test_list_val p x)
+    (display p) (display " at ") (display x) (display " = ") (display (poly_list_val p x)) (newline)
 )
