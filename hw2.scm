@@ -51,7 +51,10 @@
 )
 
 (define (poly_multi_val p x)
-    (poly_list_val p x)
+    (if (list? x)
+        (poly_list_val p x)
+        (poly_val p x)
+    )
 )
 
 (define (poly_add p q)
@@ -74,13 +77,26 @@
 )
 
 (define (poly_mul p q)
-    (map
+    (let ((a (map
         (lambda (x)
             (poly_scale x q)
         )
         p
+    )))
+        (cond
+            ((null? a) '())
+            (else (cdr (helper a)))
+        )
     )
 )
+
+(define (helper a)
+    (cond
+        ((null? (cdr a)) (cons 0 (car a)))
+        (else (cons 0 (poly_add (car a) (helper (cdr a)))))
+    )
+)
+
 
 (define (try-rewrite-let expr)
   (display "in  : ") (display expr) (newline)
