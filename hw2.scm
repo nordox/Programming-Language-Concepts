@@ -50,6 +50,38 @@
     )
 )
 
+(define (poly_multi_val p x)
+    (poly_list_val p x)
+)
+
+(define (poly_add p q)
+    (cond
+        ((> (length p) (length q)) (poly_add p (fold-right cons '(0) q)))
+        ((< (length p) (length q)) (poly_add (fold-right cons '(0) p) q))
+        (else (map + p q))
+    )
+)
+
+(define (poly_scale m p)
+    (if (null? p) '()
+        (map
+            (lambda (x)
+                (* m x)
+            )
+            p
+        )
+    )
+)
+
+(define (poly_mul p q)
+    (map
+        (lambda (x)
+            (poly_scale x q)
+        )
+        p
+    )
+)
+
 (define (try-rewrite-let expr)
   (display "in  : ") (display expr) (newline)
   (display "out : ") (display (rewrite-let expr)) (newline)
@@ -68,4 +100,20 @@
 
 (define (test_list_val p x)
     (display p) (display " at ") (display x) (display " = ") (display (poly_list_val p x)) (newline)
+)
+
+(define (test_multi_val p x)
+    (display p) (display " at ") (display x) (display " = ") (display (poly_multi_val p x)) (newline)
+)
+
+(define (test_add p q)
+    (display p) (display " + ") (display q) (display " = ") (display (poly_add p q)) (newline)
+)
+
+(define (test_scale m p)
+    (display m) (display " * ") (display p) (display " = ") (display (poly_scale m p)) (newline)
+)
+
+(define (test_mul p q)
+    (display p) (display " * ") (display q) (display " = ") (display (poly_mul p q)) (newline)
 )
