@@ -14,21 +14,21 @@
 )
 
 (define (rewrite-cond expr)
-    (if (equal? 'else (car (car (cdr expr)))) (cadr (car (cdr expr)))
+    (if (equal? 'else (car (car (cdr expr)))) (cadr (car (cdr expr)))   ; case (else z) => return z
         (let
             (
-                (first (car (car (cdr expr))))
-                (second (cadr (car (cdr expr))))
+                (first (car (car (cdr expr))))                          ; example: a from (a b)
+                (second (cadr (car (cdr expr))))                        ; example: b from (a b)
             )
-            (append '(if)
+            (append '(if)                                               ; put together (if a b ( .... )) recursively
                 (list first second
-                (test (remove (list first second) expr))))
+                (rewrite-cond (remove (list first second) expr))))
         )
     )
 )
 
 (define (poly_val p x)
-    (if (null? p) 0
+    (if (null? p) 0                                 ; recursively evaluate polynomial
         (+ (* x (poly_val (cdr p) x)) (car p))
     )
 )
@@ -85,51 +85,14 @@
     )))
         (cond
             ((null? a) '())
-            (else (cdr (helper a)))
+            (else (cdr (poly_mul_helper a)))
         )
     )
 )
 
-(define (helper a)
+(define (poly_mul_helper a)
     (cond
         ((null? (cdr a)) (cons 0 (car a)))
-        (else (cons 0 (poly_add (car a) (helper (cdr a)))))
+        (else (cons 0 (poly_add (car a) (poly_mul_helper (cdr a)))))
     )
-)
-
-
-(define (try-rewrite-let expr)
-  (display "in  : ") (display expr) (newline)
-  (display "out : ") (display (rewrite-let expr)) (newline)
-  (newline)
-)
-
-(define (try-rewrite-cond expr)
-  (display "in  : ") (display expr) (newline)
-  (display "out : ") (display (rewrite-cond expr)) (newline)
-  (newline)
-)
-
-(define (test_val p x)
-    (display p) (display " at ") (display x) (display " = ") (display (poly_val p x)) (newline)
-)
-
-(define (test_list_val p x)
-    (display p) (display " at ") (display x) (display " = ") (display (poly_list_val p x)) (newline)
-)
-
-(define (test_multi_val p x)
-    (display p) (display " at ") (display x) (display " = ") (display (poly_multi_val p x)) (newline)
-)
-
-(define (test_add p q)
-    (display p) (display " + ") (display q) (display " = ") (display (poly_add p q)) (newline)
-)
-
-(define (test_scale m p)
-    (display m) (display " * ") (display p) (display " = ") (display (poly_scale m p)) (newline)
-)
-
-(define (test_mul p q)
-    (display p) (display " * ") (display q) (display " = ") (display (poly_mul p q)) (newline)
 )
