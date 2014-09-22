@@ -1,3 +1,4 @@
+; p1
 ; (let ((p1 v1) ... (pn vn)) body)
 ; ((lambda (p1 ... pn) body) v1 ... vn)
 (define (rewrite-let expr)
@@ -13,6 +14,7 @@
         (map cadr (cadr expr)))             ; v1 ... vn
 )
 
+; p2
 (define (rewrite-cond expr)
     (if (equal? 'else (car (car (cdr expr)))) (cadr (car (cdr expr)))   ; case (else z) => return z
         (let
@@ -27,30 +29,26 @@
     )
 )
 
+; p3
 (define (poly_val p x)
-    (if (null? p) 0                                 ; recursively evaluate polynomial
+    ; recursively evaluate polynomial using Horner's rule
+    (if (null? p) 0 ; Base case - p is empty
         (+ (* x (poly_val (cdr p) x)) (car p))
     )
 )
 
 (define (poly_list_val p x)
+    ; Evaluates the polynomial for every element of x
     (map
         (lambda (b)
-            (if (null? p) 0
-                (+
-                    (*
-                        b
-                        (poly_val (cdr p) b)
-                    )
-                    (car p)
-                )
-            )
+            (poly_val p b)
         )
         x
     )
 )
 
 (define (poly_multi_val p x)
+    ; We can use our previous functions here depending on the situation
     (if (list? x)
         (poly_list_val p x)
         (poly_val p x)
