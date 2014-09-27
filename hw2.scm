@@ -1,3 +1,6 @@
+; CMPSC 461, Homework 2
+; Nicholas Krzenski, ngk5036@psu.edu
+
 ; p1
 ; (let ((p1 v1) ... (pn vn)) body)
 ; ((lambda (p1 ... pn) body) v1 ... vn)
@@ -24,7 +27,8 @@
             )
             (append '(if)                                               ; put together (if a b ( .... )) recursively
                 (list first second
-                (rewrite-cond (remove (list first second) expr))))
+                (rewrite-cond (remove (list first second) expr)))
+            )
         )
     )
 )
@@ -33,7 +37,13 @@
 (define (poly_val p x)
     ; recursively evaluate polynomial using Horner's rule
     (if (null? p) 0 ; Base case - p is empty
-        (+ (* x (poly_val (cdr p) x)) (car p))
+        (+
+            (*
+                x
+                (poly_val (cdr p) x)
+            )
+            (car p)
+        )
     )
 )
 
@@ -82,20 +92,29 @@
 (define (poly_mul p q)
     (let
         (
+            ; multiply every term in q with every term in p
+            ; still need to combine like terms
             (a (map
                 (lambda (x) (poly_scale x q)) p)
             )
         )
+        ; combine terms by adding
         (cond
             ((null? a) '())
-            (else (cdr (poly_mul_helper a)))
+            (else (cdr (poly_mul_helper a)))    ; cdr strips off 0 in front
         )
     )
 )
 
 (define (poly_mul_helper a)
     (cond
+        ; Base case - at the tail of the list
         ((null? (cdr a)) (cons 0 (car a)))
-        (else (cons 0 (poly_add (car a) (poly_mul_helper (cdr a)))))
+        (else
+            (cons
+                0
+                (poly_add (car a) (poly_mul_helper (cdr a)))    ; add from right to left
+            )
+        )
     )
 )
