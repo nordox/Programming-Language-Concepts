@@ -57,14 +57,19 @@
 
 (define (poly_add p q)
     (cond
+        ; Case p has more elements - append 0 to end of q
         ((> (length p) (length q)) (poly_add p (fold-right cons '(0) q)))
+        ; Case q has more elements - append 0 to end of p
         ((< (length p) (length q)) (poly_add (fold-right cons '(0) p) q))
+        ; Otherwise p and q same length - add them
         (else (map + p q))
     )
 )
 
 (define (poly_scale m p)
-    (if (null? p) '()
+    (if (null? p)   ; p is empty - return empty list
+        '()
+        ; Otherwise - multiply all values in p with m
         (map
             (lambda (x)
                 (* m x)
@@ -75,12 +80,12 @@
 )
 
 (define (poly_mul p q)
-    (let ((a (map
-        (lambda (x)
-            (poly_scale x q)
+    (let
+        (
+            (a (map
+                (lambda (x) (poly_scale x q)) p)
+            )
         )
-        p
-    )))
         (cond
             ((null? a) '())
             (else (cdr (poly_mul_helper a)))
